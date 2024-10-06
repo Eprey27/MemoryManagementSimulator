@@ -25,4 +25,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MMU.Simulator.Api\MMU.Simulator.Api.csproj" />
+  </ItemGroup>
+
 </Project>
