@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 namespace MemorySimulatorBackend.Tests
 {
-    [TestFixture]
     public class MemoryManagementServiceTests
     {
         private MemoryManagementService _memoryService;
