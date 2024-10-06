@@ -144,3 +144,6 @@ project.fragment.lock.json
 *.rej
 *.bak
 *.old
+
+# ignore 7zip files
+*.7z
