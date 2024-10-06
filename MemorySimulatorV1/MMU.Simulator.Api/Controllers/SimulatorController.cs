@@ -1,9 +1,9 @@
 // Controllers/SimulatorController.cs
 using Microsoft.AspNetCore.Mvc;
-using MemorySimulatorBackend.Models;
-using MemorySimulatorBackend.Services;
+using MMU.Simulator.Api.Models;
+using MMU.Simulator.Api.Services;
 
-namespace MemorySimulatorBackend.Controllers
+namespace MMU.Simulator.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

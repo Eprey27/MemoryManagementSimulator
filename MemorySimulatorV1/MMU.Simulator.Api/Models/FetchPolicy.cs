@@ -1,5 +1,5 @@
 // Models/FetchPolicy.cs
-namespace MemorySimulatorBackend.Models
+namespace MMU.Simulator.Api.Models
 {
     public enum FetchPolicy
     {

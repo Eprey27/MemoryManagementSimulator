@@ -1,5 +1,5 @@
 // Models/PlacementPolicy.cs
-namespace MemorySimulatorBackend.Models
+namespace MMU.Simulator.Api.Models
 {
     public enum PlacementPolicy
     {

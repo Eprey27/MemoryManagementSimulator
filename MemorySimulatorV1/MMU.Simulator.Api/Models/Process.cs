@@ -1,7 +1,7 @@
 // Models/Process.cs
 using System.Collections.Generic;
 
-namespace MemorySimulatorBackend.Models
+namespace MMU.Simulator.Api.Models
 {
     public class Process
     {

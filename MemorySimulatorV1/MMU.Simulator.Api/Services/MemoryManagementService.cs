@@ -1,10 +1,10 @@
 // Services/MemoryManagementService.cs
-using MemorySimulatorBackend.Models;
+using MMU.Simulator.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MemorySimulatorBackend.Services
+namespace MMU.Simulator.Api.Services
 {
     public class MemoryManagementService
     {

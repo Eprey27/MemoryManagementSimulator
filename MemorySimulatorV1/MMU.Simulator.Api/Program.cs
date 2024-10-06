@@ -1,5 +1,5 @@
-using MemorySimulatorBackend.Models;
-using MemorySimulatorBackend.Services;
+using MMU.Simulator.Api.Models;
+using MMU.Simulator.Api.Services;
 using Microsoft.OpenApi.Models;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
