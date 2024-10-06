@@ -135,6 +135,9 @@ project.fragment.lock.json
 # git directory itself
 .git
 
+# github directory
+.github
+
 # Temporary or system files
 *.lock
 *.orig
