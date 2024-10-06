@@ -67,6 +67,7 @@ pmdoc.*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.vs
 
 # JetBrains Rider
 .idea/

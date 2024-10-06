@@ -1,6 +1,6 @@
 @Memory.Simulator.Api_HostAddress = http://localhost:5262
 
-GET {{Memory.Simulator.Api_HostAddress}}/weatherforecast/
+GET {{Memory.Simulator.Api_HostAddress}}/swagger/
 Accept: application/json
 
 ###

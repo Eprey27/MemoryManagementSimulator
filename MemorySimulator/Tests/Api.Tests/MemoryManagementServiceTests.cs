@@ -1,13 +1,11 @@
 // Tests/MemoryManagementServiceTests.cs
-using NUnit.Framework;
-using MemorySimulatorBackend.Services;
-using MemorySimulatorBackend.Models;
 using FluentAssertions;
-using Moq;
-using System.Collections.Generic;
+using MemorySimulatorBackend.Models;
+using MemorySimulatorBackend.Services;
 
 namespace MemorySimulatorBackend.Tests
 {
+    [TestFixture]
     public class MemoryManagementServiceTests
     {
         private MemoryManagementService _memoryService;
