@@ -1,0 +1,19 @@
+/* src/app/components/memory-view/memory-view.component.css */
+.memory {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .memory div {
+    width: 100px;
+    height: 60px;
+    border: 1px solid #000;
+    margin: 2px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  .memory .occupied {
+    background-color: #b3e5fc;
+  }
+  

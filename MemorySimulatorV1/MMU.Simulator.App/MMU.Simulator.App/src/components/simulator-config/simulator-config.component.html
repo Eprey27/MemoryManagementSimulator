@@ -1,0 +1,37 @@
+<!-- src/app/components/simulator-config/simulator-config.component.html -->
+<h2>Configuración del Simulador</h2>
+<form (ngSubmit)="configureSimulator()">
+  <mat-form-field>
+    <mat-label>Tamaño de Memoria (en marcos)</mat-label>
+    <input matInput type="number" [(ngModel)]="config.totalFrames" name="totalFrames" required>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Política de Reemplazo</mat-label>
+    <mat-select [(ngModel)]="config.replacementPolicy" name="replacementPolicy">
+      <mat-option *ngFor="let policy of policies.replacementPolicies" [value]="policy">
+        {{ policy }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Política de Extracción</mat-label>
+    <mat-select [(ngModel)]="config.fetchPolicy" name="fetchPolicy">
+      <mat-option *ngFor="let policy of policies.fetchPolicies" [value]="policy">
+        {{ policy }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Política de Ubicación</mat-label>
+    <mat-select [(ngModel)]="config.placementPolicy" name="placementPolicy">
+      <mat-option *ngFor="let policy of policies.placementPolicies" [value]="policy">
+        {{ policy }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Aplicar Configuración</button>
+</form>
