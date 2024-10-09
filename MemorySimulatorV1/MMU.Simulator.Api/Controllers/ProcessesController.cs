@@ -9,9 +9,9 @@ namespace MMU.Simulator.Api.Controllers
     [Route("api/[controller]")]
     public class ProcessesController : ControllerBase
     {
-        private readonly MemoryManagementService _memoryService;
+        private readonly IMemoryManagementService _memoryService;
 
-        public ProcessesController(MemoryManagementService memoryService)
+        public ProcessesController(IMemoryManagementService memoryService)
         {
             _memoryService = memoryService;
         }

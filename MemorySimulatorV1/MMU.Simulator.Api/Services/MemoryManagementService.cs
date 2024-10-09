@@ -1,217 +1,90 @@
 // Services/MemoryManagementService.cs
 using MMU.Simulator.Api.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MMU.Simulator.Api.Services
 {
-    public class MemoryManagementService
+    public class MemoryManagementService : IMemoryManagementService
     {
-        private PhysicalMemory _physicalMemory;
-        private SwapSpace _swapSpace;
-        private List<Process> _processes;
+        private int _totalFrames;
         private ReplacementPolicy _replacementPolicy;
         private FetchPolicy _fetchPolicy;
         private PlacementPolicy _placementPolicy;
-        private Queue<Process> _readyQueue;
 
-        public MemoryManagementService(int totalFrames, ReplacementPolicy replacementPolicy, FetchPolicy fetchPolicy, PlacementPolicy placementPolicy)
+        private PhysicalMemory _physicalMemory;
+        private SwapSpace _swapSpace;
+        private List<Process> _processes;
+
+        public MemoryManagementService()
         {
-            _physicalMemory = new PhysicalMemory(totalFrames);
-            _swapSpace = new SwapSpace();
+            // Inicializar con valores predeterminados o vacíos
+            _totalFrames = 100;
+            _replacementPolicy = ReplacementPolicy.LRU;
+            _fetchPolicy = FetchPolicy.DemandPaging;
+            _placementPolicy = PlacementPolicy.FirstFit;
+
+            _physicalMemory = new PhysicalMemory
+            {
+                TotalFrames = _totalFrames,
+                Frames = new List<Frame>()
+            };
+
+            _swapSpace = new SwapSpace
+            {
+                Pages = new List<Page>()
+            };
+
             _processes = new List<Process>();
+
+            InitializePhysicalMemory();
+        }
+
+        public void ConfigureSimulator(int totalFrames, ReplacementPolicy replacementPolicy, FetchPolicy fetchPolicy, PlacementPolicy placementPolicy)
+        {
+            _totalFrames = totalFrames;
             _replacementPolicy = replacementPolicy;
             _fetchPolicy = fetchPolicy;
             _placementPolicy = placementPolicy;
-            _readyQueue = new Queue<Process>();
+
+            // Reiniciar y reconfigurar la memoria física
+            _physicalMemory.TotalFrames = _totalFrames;
+            _physicalMemory.Frames.Clear();
+            InitializePhysicalMemory();
+
+            // Reiniciar el espacio de intercambio y los procesos
+            _swapSpace.Pages.Clear();
+            _processes.Clear();
+        }
+
+        private void InitializePhysicalMemory()
+        {
+            for (int i = 0; i < _totalFrames; i++)
+            {
+                _physicalMemory.Frames.Add(new Frame
+                {
+                    FrameNumber = i,
+                    IsOccupied = false
+                });
+            }
         }
 
         public void AddProcess(Process process)
         {
             _processes.Add(process);
-            _readyQueue.Enqueue(process);
-        }
 
-        public void RequestPage(int processId, int pageId)
-        {
-            var process = _processes.FirstOrDefault(p => p.Id == processId);
-            if (process == null)
+            // Agregar todas las páginas al espacio de intercambio
+            foreach (var segment in process.Segments)
             {
-                throw new Exception("Proceso no encontrado");
-            }
-
-            var page = process.Segments.SelectMany(s => s.Pages)
-                                       .FirstOrDefault(p => p.Id == pageId);
-            if (page == null)
-            {
-                throw new Exception("Página no encontrada");
-            }
-
-            if (!page.IsValid)
-            {
-                HandlePageFault(page);
-
-                if (_fetchPolicy == FetchPolicy.Prepaging)
+                foreach (var page in segment.Pages)
                 {
-                    PrepageAdjacentPages(process, page);
-                }
-            }
-            else
-            {
-                page.LastAccessTime = DateTime.Now;
-            }
-        }
-
-        private void HandlePageFault(Page page)
-        {
-            var frame = FindFrameForPage(page);
-            if (frame != null)
-            {
-                AssignPageToFrame(page, frame);
-            }
-            else
-            {
-                ReplacePage(page);
-            }
-        }
-
-        private Frame FindFrameForPage(Page page)
-        {
-            var candidateFrames = _physicalMemory.Frames.Where(f => !f.IsOccupied).ToList();
-
-            switch (_placementPolicy)
-            {
-                case PlacementPolicy.FirstFit:
-                    return candidateFrames.FirstOrDefault();
-                case PlacementPolicy.BestFit:
-                    // Implementar lógica de mejor ajuste si se considera el tamaño de los marcos
-                    return candidateFrames.FirstOrDefault();
-                case PlacementPolicy.WorstFit:
-                    // Implementar lógica de peor ajuste si se considera el tamaño de los marcos
-                    return candidateFrames.FirstOrDefault();
-                default:
-                    return candidateFrames.FirstOrDefault();
-            }
-        }
-
-        private void AssignPageToFrame(Page page, Frame frame)
-        {
-            frame.IsOccupied = true;
-            frame.ProcessId = page.ProcessId;
-            frame.PageId = page.Id;
-
-            page.IsValid = true;
-            page.FrameNumber = frame.FrameNumber;
-            page.LastAccessTime = DateTime.Now;
-            page.LoadTime = DateTime.Now;
-        }
-
-        private void ReplacePage(Page newPage)
-        {
-            Page pageToReplace = null;
-
-            switch (_replacementPolicy)
-            {
-                case ReplacementPolicy.FIFO:
-                    pageToReplace = SelectPageToReplaceFIFO();
-                    break;
-                case ReplacementPolicy.LRU:
-                    pageToReplace = SelectPageToReplaceLRU();
-                    break;
-                case ReplacementPolicy.Optimal:
-                    // Implementación del algoritmo óptimo requiere conocimiento futuro
-                    pageToReplace = SelectPageToReplaceLRU(); // Placeholder
-                    break;
-            }
-
-            var frame = _physicalMemory.Frames.First(f => f.FrameNumber == pageToReplace.FrameNumber);
-
-            pageToReplace.IsValid = false;
-            pageToReplace.FrameNumber = null;
-
-            AssignPageToFrame(newPage, frame);
-        }
-
-        private Page SelectPageToReplaceFIFO()
-        {
-            var pagesInMemory = _processes.SelectMany(p => p.Segments)
-                                          .SelectMany(s => s.Pages)
-                                          .Where(p => p.IsValid)
-                                          .OrderBy(p => p.LoadTime)
-                                          .ToList();
-
-            return pagesInMemory.First();
-        }
-
-        private Page SelectPageToReplaceLRU()
-        {
-            var pagesInMemory = _processes.SelectMany(p => p.Segments)
-                                          .SelectMany(s => s.Pages)
-                                          .Where(p => p.IsValid)
-                                          .OrderBy(p => p.LastAccessTime)
-                                          .ToList();
-
-            return pagesInMemory.First();
-        }
-
-        private void PrepageAdjacentPages(Process process, Page currentPage)
-        {
-            var adjacentPages = GetAdjacentPages(process, currentPage);
-            foreach (var page in adjacentPages)
-            {
-                if (!page.IsValid)
-                {
-                    HandlePageFault(page);
+                    page.ProcessId = process.Id;
+                    _swapSpace.Pages.Add(page);
                 }
             }
         }
 
-        private List<Page> GetAdjacentPages(Process process, Page currentPage)
+        public List<Process> GetProcesses()
         {
-            var pages = process.Segments.SelectMany(s => s.Pages).ToList();
-            int index = pages.FindIndex(p => p.Id == currentPage.Id);
-            var adjacentPages = new List<Page>();
-
-            if (index + 1 < pages.Count)
-            {
-                adjacentPages.Add(pages[index + 1]);
-            }
-
-            return adjacentPages;
-        }
-
-        public void SwapOutProcess(int processId)
-        {
-            var process = _processes.FirstOrDefault(p => p.Id == processId);
-            if (process != null)
-            {
-                foreach (var page in process.Segments.SelectMany(s => s.Pages))
-                {
-                    if (page.IsValid)
-                    {
-                        var frame = _physicalMemory.Frames.First(f => f.FrameNumber == page.FrameNumber);
-                        frame.IsOccupied = false;
-                        frame.ProcessId = null;
-                        frame.PageId = null;
-
-                        page.IsValid = false;
-                        page.FrameNumber = null;
-
-                        _swapSpace.Pages.Add(page);
-                    }
-                }
-            }
-        }
-
-        public void SwapInProcess(int processId)
-        {
-            var pagesInSwap = _swapSpace.Pages.Where(p => p.ProcessId == processId).ToList();
-            foreach (var page in pagesInSwap)
-            {
-                HandlePageFault(page);
-                _swapSpace.Pages.Remove(page);
-            }
+            return _processes;
         }
 
         public PhysicalMemory GetPhysicalMemory()
@@ -224,9 +97,86 @@ namespace MMU.Simulator.Api.Services
             return _swapSpace;
         }
 
-        public List<Process> GetProcesses()
+        public void RequestPage(int processId, int pageId)
         {
-            return _processes;
+            // Implementar la lógica para manejar la solicitud de página
+            // Incluyendo las políticas configuradas
+
+            // Ejemplo simplificado:
+            var page = _swapSpace.Pages.FirstOrDefault(p => p.ProcessId == processId && p.Id == pageId);
+
+            if (page != null)
+            {
+                var freeFrame = _physicalMemory.Frames.FirstOrDefault(f => !f.IsOccupied);
+
+                if (freeFrame != null)
+                {
+                    // Cargar la página en la memoria física
+                    freeFrame.IsOccupied = true;
+                    freeFrame.ProcessId = processId;
+                    freeFrame.PageId = pageId;
+
+                    page.IsValid = true;
+                    page.FrameNumber = freeFrame.FrameNumber;
+                    page.LoadTime = DateTime.Now;
+                    page.LastAccessTime = DateTime.Now;
+
+                    _swapSpace.Pages.Remove(page);
+                }
+                else
+                {
+                    // Aplicar la política de reemplazo
+                    ApplyReplacementPolicy(page);
+                }
+            }
+            else
+            {
+                throw new Exception("La página solicitada no se encuentra en el espacio de intercambio.");
+            }
         }
+
+        private void ApplyReplacementPolicy(Page newPage)
+        {
+            // Implementar la lógica según _replacementPolicy
+            // Este es un ejemplo simplificado usando FIFO
+
+            var frameToReplace = _physicalMemory.Frames.FirstOrDefault(f => f.IsOccupied);
+
+            if (frameToReplace != null)
+            {
+                // Encontrar la página en memoria
+                var pageInMemory = _processes
+                    .SelectMany(p => p.Segments)
+                    .SelectMany(s => s.Pages)
+                    .FirstOrDefault(p => p.FrameNumber == frameToReplace.FrameNumber);
+
+                if (pageInMemory != null)
+                {
+                    // Mover la página al espacio de intercambio
+                    pageInMemory.IsValid = false;
+                    pageInMemory.FrameNumber = null;
+                    pageInMemory.LastAccessTime = DateTime.Now;
+
+                    _swapSpace.Pages.Add(pageInMemory);
+                }
+
+                // Cargar la nueva página en el marco reemplazado
+                frameToReplace.ProcessId = newPage.ProcessId;
+                frameToReplace.PageId = newPage.Id;
+
+                newPage.IsValid = true;
+                newPage.FrameNumber = frameToReplace.FrameNumber;
+                newPage.LoadTime = DateTime.Now;
+                newPage.LastAccessTime = DateTime.Now;
+                            
+                _swapSpace.Pages.Remove(newPage);
+            }
+            else
+            {
+                throw new Exception("No se pudo aplicar la política de reemplazo. No hay marcos ocupados.");
+            }
+        }
+
+        // Otros métodos y funcionalidades existentes
     }
 }
