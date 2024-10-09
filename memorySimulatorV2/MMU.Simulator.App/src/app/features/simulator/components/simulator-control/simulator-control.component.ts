@@ -1,7 +1,7 @@
 // src/app/features/simulator/components/simulator-control/simulator-control.component.ts
 
 import { Component } from '@angular/core';
-import { SimulatorService } from '../../../core/services/simulator.service';
+import { SimulatorService } from './../../../../core/services/simulator.service';
 
 @Component({
   selector: 'app-simulator-control',

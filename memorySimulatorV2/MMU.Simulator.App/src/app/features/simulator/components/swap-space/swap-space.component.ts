@@ -1,8 +1,8 @@
 // src/app/features/simulator/components/swap-space/swap-space.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { SwapService } from '../../../core/services/swap.service';
-import { Page } from '../../../shared/models/page.model';
+import { SwapService } from './../../../../core/services/swap.service';
+import { Page } from './../../../../shared/models/page.model';
 
 @Component({
   selector: 'app-swap-space',

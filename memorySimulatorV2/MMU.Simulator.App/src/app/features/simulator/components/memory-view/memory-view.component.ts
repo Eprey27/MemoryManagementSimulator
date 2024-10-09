@@ -1,8 +1,8 @@
 // src/app/features/simulator/components/memory-view/memory-view.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { MemoryService } from '../../../core/services/memory.service';
-import { Frame } from '../../../shared/models/frame.model';
+import { MemoryService } from './../../../../core/services/memory.service';
+import { Frame } from './../../../../shared/models/frame.model';
 
 @Component({
   selector: 'app-memory-view',

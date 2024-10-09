@@ -1,9 +1,10 @@
 // src/app/features/simulator/components/add-process/add-process.component.ts
 
 import { Component } from '@angular/core';
-import { ProcessService } from '../../../core/services/process.service';
-import { Process } from '../../../shared/models/process.model';
-import { Segment } from '../../../shared/models/segment.model';
+import { ProcessService } from './../../../../core/services/process.service';
+
+import { Process } from './../../../../shared/models/process.model';
+import { Segment } from './../../../../shared/models/segment.model';
 
 @Component({
   selector: 'app-add-process',

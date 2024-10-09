@@ -1,6 +1,5 @@
 // Controllers/SimulatorController.cs
 using Microsoft.AspNetCore.Mvc;
-using MMU.Simulator.Api.Models;
 using MMU.Simulator.Api.Services;
 
 namespace MMU.Simulator.Api.Controllers

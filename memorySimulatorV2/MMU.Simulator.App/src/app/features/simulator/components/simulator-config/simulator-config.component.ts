@@ -1,8 +1,8 @@
 // src/app/features/simulator/components/simulator-config/simulator-config.component.ts
 
 import { Component } from '@angular/core';
-import { SimulatorService } from '../../../core/services/simulator.service';
-import { SimulatorConfig } from '../../../shared/models/simulator-config.model';
+import { SimulatorService } from './../../../../core/services/simulator.service';
+import { SimulatorConfig } from './../../../../shared/models/simulator-config.model';
 
 @Component({
   selector: 'app-simulator-config',
