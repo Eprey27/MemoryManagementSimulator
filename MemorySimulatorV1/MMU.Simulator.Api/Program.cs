@@ -1,4 +1,3 @@
-// Program.cs
 using MMU.Simulator.Api.Models;
 using MMU.Simulator.Api.Services;
 using Microsoft.OpenApi.Models;
@@ -11,10 +10,10 @@ namespace MMU.Simulator.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Registrar el servicio de gestión de memoria como singleton usando la interfaz
+            // Registrar el servicio de gestión de memoria
             builder.Services.AddSingleton<IMemoryManagementService, MemoryManagementService>();
 
-            // Add services to the container.
+            // Agregar servicios al contenedor
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -32,16 +31,30 @@ namespace MMU.Simulator.Api
                 });
             });
 
+            // Configurar CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configurar el pipeline HTTP
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection(); // Puedes comentar esto para desactivar HTTPS
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

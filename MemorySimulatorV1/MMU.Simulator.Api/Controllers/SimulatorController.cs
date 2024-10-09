@@ -1,7 +1,7 @@
 // Controllers/SimulatorController.cs
 using Microsoft.AspNetCore.Mvc;
-using MMU.Simulator.Api.Models;
 using MMU.Simulator.Api.Services;
+using MMU.Simulator.Api.Models;
 
 namespace MMU.Simulator.Api.Controllers
 {
@@ -19,15 +19,19 @@ namespace MMU.Simulator.Api.Controllers
         [HttpPost("configure")]
         public IActionResult ConfigureSimulator([FromBody] SimulatorConfig config)
         {
-            _memoryService.ConfigureSimulator(config);
+            _memoryService.ConfigureSimulator(config.TotalFrames, config.ReplacementPolicy, config.FetchPolicy, config.PlacementPolicy);
             return Ok();
         }
 
         [HttpGet("configuration")]
         public IActionResult GetConfiguration()
         {
-            var config = _memoryService.GetConfiguration();
-            return Ok(config);
+            // Si tienes un método para obtener la configuración actual
+            // var config = _memoryService.GetConfiguration();
+            // return Ok(config);
+
+            // Si no, puedes devolver un mensaje
+            return Ok(new { Message = "Configuración actual no disponible." });
         }
 
         [HttpGet("memory")]
@@ -59,4 +63,3 @@ namespace MMU.Simulator.Api.Controllers
         }
     }
 }
-

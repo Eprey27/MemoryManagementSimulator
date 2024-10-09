@@ -3,8 +3,8 @@
     public class SimulatorConfig
     {
         public int TotalFrames { get; set; }
-        public string ReplacementPolicy { get; set; }
-        public string FetchPolicy { get; set; }
-        public string PlacementPolicy { get; set; }
+        public ReplacementPolicy ReplacementPolicy { get; set; }
+        public FetchPolicy FetchPolicy { get; set; }
+        public PlacementPolicy PlacementPolicy { get; set; }
     }
 }
