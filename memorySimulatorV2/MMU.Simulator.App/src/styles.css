@@ -1,0 +1,14 @@
+/* src/styles.css */
+/* Estilos globales para la aplicación */
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Puedes agregar tus estilos globales aquí */
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.mat-form-field {
+  width: 100%;
+}

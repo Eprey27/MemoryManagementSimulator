@@ -1,0 +1,22 @@
+/* src/app/features/simulator/components/swap-space/swap-space.component.css */
+
+.swap-space {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .swap-page {
+    width: 100px;
+    height: 60px;
+    border: 1px solid #000;
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #ffcdd2;
+    text-align: center;
+  }
+  
+  .swap-page p {
+    margin: 2px 0;
+  }
+  

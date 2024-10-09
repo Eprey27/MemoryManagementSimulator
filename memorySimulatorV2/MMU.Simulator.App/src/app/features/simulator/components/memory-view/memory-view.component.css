@@ -1,0 +1,25 @@
+/* src/app/features/simulator/components/memory-view/memory-view.component.css */
+
+.memory {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .frame {
+    width: 120px;
+    height: 80px;
+    border: 1px solid #000;
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  
+  .occupied {
+    background-color: #b3e5fc;
+  }
+  
+  .frame p {
+    margin: 2px 0;
+  }
+  

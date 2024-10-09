@@ -1,0 +1,16 @@
+<!-- src/app/features/simulator/components/memory-view/memory-view.component.html -->
+
+<h2>Memoria Física</h2>
+<div class="memory">
+  <div
+    *ngFor="let frame of frames"
+    [ngClass]="{ occupied: frame.isOccupied }"
+    class="frame"
+  >
+    <p>Marco {{ frame.frameNumber }}</p>
+    <p *ngIf="frame.isOccupied">
+      Proceso: {{ frame.processId }}, Página: {{ frame.pageId }}
+    </p>
+    <p *ngIf="!frame.isOccupied">Libre</p>
+  </div>
+</div>

@@ -1,12 +1,21 @@
 <!-- src/app/features/simulator/components/add-process/add-process.component.html -->
+
 <h2>Agregar Proceso</h2>
 <form (ngSubmit)="addProcess()">
-  <mat-form-field>
+  <mat-form-field appearance="fill">
     <mat-label>ID del Proceso</mat-label>
-    <input matInput type="number" [(ngModel)]="process.id" name="id" required />
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="process.id"
+      name="id"
+      required
+      title="ID del Proceso"
+      placeholder="Ingrese el ID del proceso"
+    />
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field appearance="fill">
     <mat-label>Nombre del Proceso</mat-label>
     <input
       matInput
@@ -14,6 +23,8 @@
       [(ngModel)]="process.name"
       name="name"
       required
+      title="Nombre del Proceso"
+      placeholder="Ingrese el nombre del proceso"
     />
   </mat-form-field>
 
@@ -30,7 +41,7 @@
     <div *ngFor="let segment of process.segments; let i = index">
       <mat-card>
         <mat-card-title>Segmento {{ i + 1 }}</mat-card-title>
-        <mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>Tamaño del Segmento</mat-label>
           <input
             matInput
@@ -38,6 +49,7 @@
             [(ngModel)]="segment.size"
             name="size{{ i }}"
             required
+            placeholder="Ingrese el tamaño del segmento"
           />
         </mat-form-field>
         <button
