@@ -25,7 +25,6 @@ import { routes } from './app.routes';
 
 @NgModule({
   declarations: [
-    AppComponent,
     AddProcessComponent,
     MemoryViewComponent,
     SwapSpaceComponent,
@@ -42,9 +41,11 @@ import { routes } from './app.routes';
     MatCardModule,
     MatSelectModule,
     MatToolbarModule,
-    RouterModule.forRoot(routes) // <-- Configura las rutas en tu módulo principal
+    RouterModule.forRoot(routes),
+    AppComponent
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
-export class AppModule { }
+export class AppModule { };
+export class SimulatorConfigComponent { };

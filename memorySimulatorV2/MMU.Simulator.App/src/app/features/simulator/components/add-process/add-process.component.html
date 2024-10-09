@@ -1,0 +1,79 @@
+<!-- src/app/features/simulator/components/add-process/add-process.component.html -->
+<h2>Agregar Proceso</h2>
+<form (ngSubmit)="addProcess()">
+  <mat-form-field>
+    <mat-label>ID del Proceso</mat-label>
+    <input matInput type="number" [(ngModel)]="process.id" name="id" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Nombre del Proceso</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="process.name"
+      name="name"
+      required
+    />
+  </mat-form-field>
+
+  <div>
+    <h3>Segmentos</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addSegment()"
+      type="button"
+    >
+      Agregar Segmento
+    </button>
+    <div *ngFor="let segment of process.segments; let i = index">
+      <mat-card>
+        <mat-card-title>Segmento {{ i + 1 }}</mat-card-title>
+        <mat-form-field>
+          <mat-label>Tamaño del Segmento</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="segment.size"
+            name="size{{ i }}"
+            required
+          />
+        </mat-form-field>
+        <button
+          mat-button
+          color="warn"
+          (click)="removeSegment(i)"
+          type="button"
+        >
+          Eliminar Segmento
+        </button>
+
+        <h4>Páginas</h4>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="addPage(segment)"
+          type="button"
+        >
+          Agregar Página
+        </button>
+        <div *ngFor="let page of segment.pages; let j = index">
+          <p>Página {{ j + 1 }} (Número de Página: {{ page.pageNumber }})</p>
+          <button
+            mat-button
+            color="warn"
+            (click)="removePage(segment, j)"
+            type="button"
+          >
+            Eliminar Página
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" type="submit">
+    Agregar Proceso
+  </button>
+</form>

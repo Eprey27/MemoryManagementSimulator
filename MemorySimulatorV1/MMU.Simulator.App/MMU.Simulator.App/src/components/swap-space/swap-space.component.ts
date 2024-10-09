@@ -8,6 +8,7 @@ import { Page } from '../../services/process.service';
   templateUrl: './swap-space.component.html',
   styleUrls: ['./swap-space.component.css']
 })
+
 export class SwapSpaceComponent implements OnInit {
   pages: Page[] = [];
 

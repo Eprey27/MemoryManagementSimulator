@@ -1,12 +1,19 @@
-<!-- src/app/app.component.html -->
 <mat-toolbar color="primary">
   <span>Simulador de Gestión de Memoria</span>
 </mat-toolbar>
 
 <div class="container">
-  <app-simulator-config></app-simulator-config>
-  <app-add-process></app-add-process>
-  <app-simulator-control></app-simulator-control>
-  <app-memory-view></app-memory-view>
-  <app-swap-space></app-swap-space>
+  <div class="config-section">
+    <app-simulator-config></app-simulator-config>
+  </div>
+
+  <div class="process-section">
+    <app-add-process></app-add-process>
+    <app-simulator-control></app-simulator-control>
+  </div>
+
+  <div class="view-section">
+    <app-memory-view></app-memory-view>
+    <app-swap-space></app-swap-space>
+  </div>
 </div>
